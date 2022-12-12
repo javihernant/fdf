@@ -6,18 +6,19 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 10:52:35 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/24 18:05:44 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/11 16:08:48 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "fdf.h"
 #include "map_utils.h"
 #include "common_utils.h"
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 
-static int	ft_get_mapdata(char *path, int *width, int *height)
+static int	ft_get_mapdata(char *path, t_map *map)
 {
 	int		fd;
 	char	*line;
@@ -28,44 +29,35 @@ static int	ft_get_mapdata(char *path, int *width, int *height)
 	line = get_next_line(fd);
 	if (!line)
 		return (1);
-	*width = ft_get_width(line);
-	*height = 0;
+	map->w = ft_get_width(line);
+	map->h = 0;
 	while (line != NULL)
 	{
-		(*height)++;
+		map->h++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
+	map->scale = 1;
 	return (0);
 }
 
-static int	**ft_alloc_maps(int width, int height)
+static int	ft_alloc_map(t_map *map)
 {
-	int	**maps;
-
-	if (width <= 0 || height <= 0)
-		return (0);
-	maps = malloc(sizeof(int *) * 2);
-	if (!maps)
-		return (0);
-	maps[0] = malloc(sizeof(int) * width * height);
-	if (!maps[0])
-		return (0);
-	maps[1] = malloc(sizeof(int) * width * height);
-	if (!maps[1])
-	{
-		free(maps[0]);
-		return (0);
-	}
-	return (maps);
+	if (map->w <= 0 || map->h <= 0)
+		return (1);
+	map->pts = malloc(sizeof(t_point) * map->w * map->h);
+	if (!map->pts)
+		return (1);
+	return (0);
 }
 
-static int	ft_store_line(char *line, int **maps, int row, int width)
+static int	ft_store_line(t_map *map, char *line, int row)
 {
 	char	**values;
 	char	*val;
 	int		i;
+	t_point	*pt;
 
 	values = ft_split(line, ' ');
 	if (!values)
@@ -74,10 +66,13 @@ static int	ft_store_line(char *line, int **maps, int row, int width)
 	while (values[i] != NULL)
 	{
 		val = values[i];
-		maps[0][row * width + i] = ft_atoi(val);
+		pt = &map->pts[row * map->w + i];
+		pt->axes[X] = i * DFLT_SCALE;
+		pt->axes[Y] = row * DFLT_SCALE;
+		pt->axes[Z] = ft_atoi(val) * DFLT_SCALE;
 		while (ft_isdigit(*val))
 			val++;
-		maps[1][row * width + i] = (int) ft_hex_atoi(val);
+		pt->color = ft_hex_atoi(val);
 		free(values[i]);
 		i++;
 	}
@@ -85,7 +80,7 @@ static int	ft_store_line(char *line, int **maps, int row, int width)
 	return (0);
 }
 
-static int	ft_fill_maps(int **maps, int width, char *path)
+static int	ft_fill_map(t_map *map, char *path)
 {
 	int		fd;
 	int		i;
@@ -93,12 +88,14 @@ static int	ft_fill_maps(int **maps, int width, char *path)
 	int		rc;
 
 	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (1);
 	line = get_next_line(fd);
 	i = 0;
 	rc = 0;
 	while (line != NULL)
 	{
-		rc = ft_store_line(line, maps, i, width);
+		rc = ft_store_line(map, line, i);
 		free(line);
 		if (rc != 0)
 			break ;
@@ -109,21 +106,17 @@ static int	ft_fill_maps(int **maps, int width, char *path)
 	return (rc);
 }
 
-int	**ft_parse_maps(char *path, int *width, int *height)
+int	ft_parse_map(char *path, t_map *map)
 {
-	int	**maps;
-
-	if (ft_get_mapdata(path, width, height) != 0)
-		return (0);
-	maps = ft_alloc_maps(*width, *height);
-	if (!maps)
-		return (0);
-	if (ft_fill_maps(maps, *width, path) != 0)
+	if (ft_get_mapdata(path, map) != 0)
+		return (1);
+	if (ft_alloc_map(map) != 0)
+		return (1);
+	if (ft_fill_map(map, path) != 0)
 	{
-		free(maps[0]);
-		free(maps[1]);
-		free(maps);
-		return (0);
+		free(map->pts);
+		map->pts = NULL;
+		return (1);
 	}
-	return (maps);
+	return (0);
 }

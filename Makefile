@@ -1,9 +1,22 @@
 NAME:=fdf
 LIBFT = libft/libft.a
-SRC:=parse_test.c \
+SRC:=main.c \
 	 common_utils1.c \
+	 mlx_utils1.c \
+	 mlx_utils2.c \
+	 ft_draw_line.c \
+	 ft_draw_map.c \
+	 ft_scale_map.c \
 	 map_utils.c \
-	 parse_map.c
+	 parse_map.c \
+	 ft_translate_map.c \
+	 ft_center_map.c \
+	 handle_mouse.c \
+	 matrix.c \
+	 isometric.c \
+	 ft_handle_key.c
+
+#ft_isometric.c \
 
 SRC:=$(addprefix src/,$(SRC))
 OBJ=$(SRC:.c=.o)

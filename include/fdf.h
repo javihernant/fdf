@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:50:45 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/23 20:28:23 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/11 21:22:00 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,53 @@
 # include <mlx.h>
 # include "libft.h"
 
-typedef struct s_data {
+# define WIDTH 1920
+# define HEIGHT 1080
+
+# define X 0
+# define Y 1
+# define Z 2
+
+# define DFLT_SCALE 70
+# define TRNSLT_RATE 50
+# define MIN_DIST 100
+# define ANG_RATE 10
+
+# define COL_BLCK 0
+
+typedef struct s_point {
+	float	axes[3];
+	int		color;
+}	t_point;
+
+typedef struct s_mlx_data {
+	void	*mlx_ptr;
+	void	*win;
 	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_bytes;
+	char	*img_addr;
+	int		bits_per_pixel;
+	int		size_line;
 	int		endian;
+	t_point	last_click;
+	int		mouse_held;
+	//int		stroke;
+}	t_mlx_data;
+
+typedef struct s_map {
+	//int	*main;
+	//int	*colors;
+	t_point	*pts;
+	t_point cent_idx;
+	float	scale;
+	int		w;
+	int		h;
+	float	axes_mins[3];
+	float	axes_maxs[3];
+}	t_map;
+
+typedef struct s_data {
+	t_mlx_data	*mlx;
+	t_map		*map;
 }	t_data;
 
-void	ft_mlx_pixel_put(t_data *data, void *mlx, int x, int y, int color);
-int		**ft_parse_maps(char *path, int *width, int *height);
 #endif

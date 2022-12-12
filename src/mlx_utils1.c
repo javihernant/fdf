@@ -6,69 +6,71 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:54:20 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/29 18:58:04 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/11 15:59:14 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <stdlib.h>
 
-void	ft_free_mlxdata(t_mlx_data *data)
+void	ft_free_mlxdata(t_mlx_data *mlx)
 {
-	if (data->mlx_win != NULL)
-		mlx_destroy_window(data->mlx_ptr, data->mlx_win);
-	free(data->mlx_ptr);
-	free(data->img);
-	free(data->img_addr);
-	data->mlx_ptr = NULL;
-	data->mlx_win = NULL;
-	data->img = NULL;
-	data->img_addr = NULL;
+	if (mlx->win != NULL)
+		mlx_destroy_window(mlx->mlx_ptr, mlx->win);
+	free(mlx->mlx_ptr);
+	free(mlx->img);
+	free(mlx->img_addr);
+	mlx->mlx_ptr = NULL;
+	mlx->win = NULL;
+	mlx->img = NULL;
+	mlx->img_addr = NULL;
 }
 
-int	ft_mlx_init(t_mlx_data *data)
+int	ft_mlx_init(t_mlx_data *mlx)
 {
 	int	rc;
 
-	data->w = 1920;
-	data->h = 1080;
-	data->mlx_win = NULL;
-	data->img = NULL;
-	data->img_addr = NULL;
-	data->mlx_ptr = mlx_init();
+	mlx->win = NULL;
+	mlx->img = NULL;
+	mlx->img_addr = NULL;
+	mlx->mlx_ptr = mlx_init();
+	mlx->mouse_held = 0;
 	rc = 0;
-	if (!data->mlx_ptr)
+	if (!mlx->mlx_ptr)
 		return (1);
-	data->mlx_win = mlx_new_window(data->mlx_ptr, data->w, data->h,
+	mlx->win = mlx_new_window(mlx->mlx_ptr, WIDTH, HEIGHT,
 			"Hello world!");
-	if (!data->mlx_win)
+	if (!mlx->win)
 		rc = 1;
-	data->img = mlx_new_image(data->mlx_ptr, data->w, data->h);
-	if (!data->img)
+	mlx->img = mlx_new_image(mlx->mlx_ptr, WIDTH, HEIGHT);
+	if (!mlx->img)
 		rc = 1;
-	data->img_addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
-			&data->size_line, &data->endian);
-	if (!data->img_addr)
+	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel,
+			&mlx->size_line, &mlx->endian);
+	if (!mlx->img_addr)
 		rc = 1;
 	if (rc != 0)
-		ft_free_mlxdata(data);
+		ft_free_mlxdata(mlx);
 	return (rc);
 }
 
-void	ft_pixel_put(t_point *point, t_mlx_data *data)
+void	ft_pixel_put(t_point *point, t_mlx_data *mlx)
 {
 	char	*dst;
 
-	dst = data->img_addr + (point->y * data->size_line + point->x
-			* (data->bits_per_pixel / 8));
-	if (data->endian == 1)
+	if (point->axes[X] < 0 || point->axes[X] >= WIDTH || point->axes[Y] < 0
+		|| point->axes[Y] >= HEIGHT)
+		return ;
+	dst = mlx->img_addr + ((int) point->axes[Y] * mlx->size_line
+			+ (int) point->axes[X] * (mlx->bits_per_pixel / 8));
+	if (mlx->endian == 1)
 	{
 		dst[0] = (point->color >> 24);
 		dst[1] = (point->color >> 16) & 0xFF;
 		dst[2] = (point->color >> 8) & 0xFF;
 		dst[3] = (point->color) & 0xFF;
 	}
-	else if (data->endian == 0)
+	else if (mlx->endian == 0)
 	{
 		dst[0] = (point->color) & 0xFF;
 		dst[1] = (point->color >> 8) & 0xFF;
@@ -77,12 +79,30 @@ void	ft_pixel_put(t_point *point, t_mlx_data *data)
 	}
 }
 
-int	ft_get_alpha(int col)
+void	ft_set_color(int color, t_mlx_data *mlx)
 {
-	return ((col >> 24) & 0xff);
+	t_point	pt;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < HEIGHT)
+	{
+		j = 0;
+		while (j < WIDTH)
+		{
+			pt.axes[X] = j;
+			pt.axes[Y] = i;
+			pt.color = color;
+			ft_pixel_put(&pt, mlx);
+			j++;
+		}
+		i++;
+	}
 }
 
-int	ft_get_red(int col)
+void	ft_update_img(t_mlx_data *mlx)
 {
-	return ((col >> 16) & 0xff);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win,
+		mlx->img, 0, 0);
 }

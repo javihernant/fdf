@@ -6,9 +6,12 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 12:35:28 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/24 17:58:33 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/11/27 23:32:16 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
+#include <stdlib.h>
 
 static int	ft_get_hexval(char c)
 {
@@ -26,6 +29,14 @@ static int	ft_get_hexval(char c)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_abs(int num)
+{
+	if (num < 0)
+		return (-num);
+	else
+		return (num);
 }
 
 int	ft_hex_atoi(char *str)
@@ -46,4 +57,10 @@ int	ft_hex_atoi(char *str)
 		str++;
 	}
 	return (v);
+}
+
+void	ft_error(void)
+{
+	ft_putstr_fd("Error!", 2);
+	exit(1);
 }

@@ -6,11 +6,12 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 20:16:57 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/24 18:03:26 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:50:31 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "fdf.h"
 #include <stdlib.h>
 
 int	ft_get_width(char *line)
@@ -33,26 +34,32 @@ int	ft_get_width(char *line)
 	return (i);
 }
 
-void	ft_free_maps(int ***maps)
-{
-	free((*maps)[0]);
-	free((*maps)[1]);
-	free(*maps);
-	*maps = NULL;
-}
-
-static void	ft_print_map(int *map, int width, int height)
+void	ft_print_point(t_point *p)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	while (i < height)
+	while (i < 3)
+	{
+		ft_printf("%d,", p->axes[i]);
+		i++;
+	}
+	ft_printf("%d", p->color);
+}
+
+void	ft_print_map(t_map *map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < map->h)
 	{
 		j = 0;
-		while (j < width)
+		while (j < map->w)
 		{
-			ft_printf("%d ", map[i * width + j]);
+			ft_print_point(&map->pts[i * map->w + j]);
+			ft_printf(" ");
 			j++;
 		}
 		ft_printf("\n");
@@ -60,10 +67,11 @@ static void	ft_print_map(int *map, int width, int height)
 	}
 }
 
-void	ft_print_maps(int **maps, int width, int height)
+void	ft_mod_point(int pt_idx, int val, int axis, t_map *map)
 {
-	ft_printf("Values:\n");
-	ft_print_map(maps[0], width, height);
-	ft_printf("Colors:\n");
-	ft_print_map(maps[1], width, height);
+	map->pts[pt_idx].axes[axis] = val;
+	if (val < map->axes_mins[axis])
+		map->axes_mins[axis] = val;
+	if (val > map->axes_maxs[axis])
+		map->axes_maxs[axis] = val;
 }
