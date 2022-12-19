@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:50:45 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/11 21:22:00 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:28:01 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define Y 1
 # define Z 2
 
-# define DFLT_SCALE 70
-# define TRNSLT_RATE 50
+# define INIT_SCALE 70
+# define TRANS_RATE 50
 # define MIN_DIST 100
 # define ANG_RATE 10
 
@@ -48,15 +48,14 @@ typedef struct s_mlx_data {
 }	t_mlx_data;
 
 typedef struct s_map {
-	//int	*main;
-	//int	*colors;
-	t_point	*pts;
-	t_point cent_idx;
-	float	scale;
 	int		w;
 	int		h;
-	float	axes_mins[3];
-	float	axes_maxs[3];
+	t_point	*pts;
+	t_point	*mat;
+	float	scale;
+	float	trans[3];
+	float	rots[3];
+	float	brange;
 }	t_map;
 
 typedef struct s_data {

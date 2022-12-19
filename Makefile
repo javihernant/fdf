@@ -5,16 +5,12 @@ SRC:=main.c \
 	 mlx_utils1.c \
 	 mlx_utils2.c \
 	 ft_draw_line.c \
-	 ft_draw_map.c \
-	 ft_scale_map.c \
+	 draw_map.c \
 	 map_utils.c \
 	 parse_map.c \
-	 ft_translate_map.c \
-	 ft_center_map.c \
 	 handle_mouse.c \
 	 matrix.c \
-	 isometric.c \
-	 ft_handle_key.c
+	 handle_keys.c
 
 #ft_isometric.c \
 
@@ -25,8 +21,9 @@ COMPILED_OBJS=$(shell find . -name '*.o')
 IFLAGS=-I./libft/include -I./include -I/usr/include -Imlx_linux
 LFLAGS=-L./libft -L/usr/lib -Lmlx_linux
 LIBS=-lft -lmlx -lXext -lX11 -lm -lz
-DBG=-g -g3
-CFLAGS=
+DBG=-g -O3
+#-O
+CFLAGS= 
 #-Wall -Wextra -Werror
 CC=gcc
 

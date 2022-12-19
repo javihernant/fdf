@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 10:52:35 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/11 16:08:48 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:49:30 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "matrix.h"
 
-static int	ft_get_mapdata(char *path, t_map *map)
+static int	ft_init_w_and_h(char *path, t_map *map)
 {
 	int		fd;
 	char	*line;
@@ -38,13 +39,37 @@ static int	ft_get_mapdata(char *path, t_map *map)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	map->scale = 1;
 	return (0);
 }
 
-static int	ft_alloc_map(t_map *map)
+static int	ft_init_other(t_map *map)
+{
+	map->scale = 50;
+	map->trans[X] = WIDTH / 2;
+	map->trans[Y] = HEIGHT / 2 + 150;
+	map->trans[Z] = 0;
+	map->rots[X] = 0;
+	map->rots[Y] = 0;
+	map->rots[Z] = 0;
+	map->brange = 0;
+	return (0);
+}
+
+static int	ft_init_mapdata(char *path, t_map *map)
+{
+	if (ft_init_w_and_h(path, map) != 0)
+		return (1);
+	if (ft_init_other(map) != 0)
+		return (1);
+	return (0);
+}
+
+static int	ft_alloc_map_mem(t_map *map)
 {
 	if (map->w <= 0 || map->h <= 0)
+		return (1);
+	map->mat = malloc(sizeof(t_point) * map->w * map->h);
+	if (!map->mat)
 		return (1);
 	map->pts = malloc(sizeof(t_point) * map->w * map->h);
 	if (!map->pts)
@@ -66,10 +91,10 @@ static int	ft_store_line(t_map *map, char *line, int row)
 	while (values[i] != NULL)
 	{
 		val = values[i];
-		pt = &map->pts[row * map->w + i];
-		pt->axes[X] = i * DFLT_SCALE;
-		pt->axes[Y] = row * DFLT_SCALE;
-		pt->axes[Z] = ft_atoi(val) * DFLT_SCALE;
+		pt = &map->mat[row * map->w + i];
+		pt->axes[X] = i;
+		pt->axes[Y] = row;
+		pt->axes[Z] = ft_atoi(val);
 		while (ft_isdigit(*val))
 			val++;
 		pt->color = ft_hex_atoi(val);
@@ -80,7 +105,7 @@ static int	ft_store_line(t_map *map, char *line, int row)
 	return (0);
 }
 
-static int	ft_fill_map(t_map *map, char *path)
+static int	ft_fill_mat(t_map *map, char *path)
 {
 	int		fd;
 	int		i;
@@ -106,17 +131,28 @@ static int	ft_fill_map(t_map *map, char *path)
 	return (rc);
 }
 
+void	ft_center_mat(t_map *map)
+{
+	float	vec[3];
+
+	vec[X] = -map->w / 2;
+	vec[Y] = -map->h / 2;
+	vec[Z] = 0;
+	ft_mat_trans(map->mat, map->w * map->h, vec);
+}
+
 int	ft_parse_map(char *path, t_map *map)
 {
-	if (ft_get_mapdata(path, map) != 0)
+	if (ft_init_mapdata(path, map) != 0)
 		return (1);
-	if (ft_alloc_map(map) != 0)
+	if (ft_alloc_map_mem(map) != 0)
 		return (1);
-	if (ft_fill_map(map, path) != 0)
+	if (ft_fill_mat(map, path) != 0)
 	{
 		free(map->pts);
 		map->pts = NULL;
 		return (1);
 	}
+	ft_center_mat(map);
 	return (0);
 }

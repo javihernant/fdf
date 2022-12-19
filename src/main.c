@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 17:13:09 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/11 17:40:29 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/13 20:56:28 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	main(int argc, char *argv[])
 	t_data		data;
 	t_map		map;
 	t_mlx_data	mlx;
-	t_point		*vec;
 
 	if (argc != 2)
 	{
@@ -34,11 +33,7 @@ int	main(int argc, char *argv[])
 		ft_error();
 	if (ft_mlx_init(&mlx) != 0)
 		ft_error();
-	//ft_scale_map(&map);
-	//ft_isometric(&map);
-	ft_center_map(&map);
-	ft_isometric(&map);
-	ft_draw_map(&map, &mlx);
+	ft_apply_and_draw(&map, &mlx);
 	data.mlx = &mlx;
 	data.map = &map;
 	//mlx_mouse_hook(mlx.win, ft_handle_key, &data);

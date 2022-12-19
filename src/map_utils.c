@@ -6,13 +6,16 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 20:16:57 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/01 18:50:31 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:23:07 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "fdf.h"
 #include <stdlib.h>
+#include "map_utils.h"
+#include "matrix.h"
+#include <stdio.h>
 
 int	ft_get_width(char *line)
 {
@@ -67,11 +70,39 @@ void	ft_print_map(t_map *map)
 	}
 }
 
-void	ft_mod_point(int pt_idx, int val, int axis, t_map *map)
+void	ft_print_map_data(t_map *map)
 {
-	map->pts[pt_idx].axes[axis] = val;
-	if (val < map->axes_mins[axis])
-		map->axes_mins[axis] = val;
-	if (val > map->axes_maxs[axis])
-		map->axes_maxs[axis] = val;
+	printf("Width: %d\n", map->w);
+	printf("Height: %d\n", map->h);
+	printf("Scale: %f\n", map->scale);
+	printf("X Translation: %f\n", map->trans[X]);
+	printf("Y Translation: %f\n", map->trans[Y]);
+	printf("Z Translation: %f\n", map->trans[Z]);
+	printf("X Rotation: %f\n", map->rots[X]);
+	printf("Y Rotation: %f\n", map->rots[Y]);
+	printf("Z Rotation: %f\n", map->rots[Z]);
+}
+
+
+
+void	ft_rotate(t_map *map)
+{
+	ft_rotate_x(map->pts, map->w * map->h, map->rots[X]);
+	ft_rotate_y(map->pts, map->w * map->h, map->rots[Y]);
+	ft_rotate_z(map->pts, map->w * map->h, map->rots[Z]);
+}
+
+void	ft_bend(t_map *map)
+{
+	int		i;
+	float	tmp;
+
+	i = 0;
+	while (i < map->w * map->h)
+	{
+		tmp = map->pts[i].axes[X] * map->pts[i].axes[X] * map->brange +
+			map->pts[i].axes[Y] * map->pts[i].axes[Y] * map->brange;
+		map->pts[i].axes[Z] -= tmp;
+		i++;
+	}
 }

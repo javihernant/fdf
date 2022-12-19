@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 17:23:38 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/12 18:43:26 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:29:45 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@
 # define KEY_CMD     259
 
 # include <X11/keysym.h>
+
 int	ft_handle_key(int keycode, t_data *data);
 int	ft_mouse_press(int button, int x, int y, t_data *data);
 int	ft_mouse_release(int button, int x, int y, t_data *data);

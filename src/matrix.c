@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:04:47 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/10 20:30:11 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:42:24 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,149 +37,133 @@ void	ft_mx_mult(float mx[3][3], t_point *pt)
 	ft_memcpy(pt->axes, tmp, sizeof(float) * 3);
 }
 
-t_point	ft_get_map_center(t_map *map)
+t_point	ft_central_pt(t_map *map, size_t len)
 {
-	int		i;
-	int		j;
-	int		k;
-	float	mins[3];
+	size_t	i;
+	size_t	k;
+	float	tot[3];
 	t_point	pt;
 
-	ft_memset(mins, 0, sizeof(float) * 3);
+	ft_memset(tot, 0, sizeof(float) * 3);
 	i = 0;
-	while (i < map->h)
+	while (i < len)
 	{
-		j = 0;
-		while (j < map->w)
+		pt = map->pts[i];
+		k = 0;
+		while (k < 3)
 		{
-			k = 0;
-			pt = map->pts[i * map->w + j];
-			while (k < 3)
-			{
-				mins[k] += pt.axes[k];
-				k++;
-			}
-			j++;
+			tot[k] += pt.axes[k];
+			k++;
 		}
 		i++;
 	}
 	k = 0;
 	while (k < 3)
 	{
-		mins[k] /= (map->h * map->w);
-		pt.axes[k] = mins[k];
+		tot[k] /= (len);
+		pt.axes[k] = tot[k];
 		k++;
 	}
 	return (pt);
 }
 
-void	ft_rotate_x(t_map *map, float angle)
+void	ft_rotate_x(t_point *mat, size_t len, float angle)
 {
 	int		i;
-	int		j;
-	float	rad;
 	float	mx[3][3];
 	t_point	pt;
 	t_point	vec;
 
+	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
-	rad = angle * M_PI / 180;
 	mx[0][0] = 1;
-	mx[1][1] = cosf(rad);
-	mx[1][2] = -sinf(rad);
-	mx[2][1] = sinf(rad);
-	mx[2][2] = cosf(rad);
-	pt = ft_get_map_center(map);
+	mx[1][1] = cosf(angle);
+	mx[1][2] = -sinf(angle);
+	mx[2][1] = sinf(angle);
+	mx[2][2] = cosf(angle);
 	i = 0;
-	while (i < map->h)
+	while (i < len)
 	{
-		j = 0;
-		while (j < map->w)
-		{
-			ft_mx_mult(mx, &map->pts[i * map->w + j]);
-			j++;
-		}
+		ft_mx_mult(mx, &mat[i]);
 		i++;
 	}
-	vec.axes[X] = pt.axes[X];
-	vec.axes[Y] = pt.axes[Y];
-	vec.axes[Z] = pt.axes[Z];
-	ft_mx_mult(mx, &vec);
-	vec.axes[X] = pt.axes[X] - vec.axes[X];
-	vec.axes[Y] = pt.axes[Y] - vec.axes[Y];
-	ft_translate_map(map, &vec);
 }
 
-void	ft_rotate_y(t_map *map, float angle)
+void	ft_rotate_y(t_point *mat, size_t len, float angle)
 {
 	int		i;
-	int		j;
-	float	rad;
 	float	mx[3][3];
 	t_point	pt;
 	t_point	vec;
 
+	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
-	rad = angle * M_PI / 180;
-	mx[0][0] = cosf(rad);
-	mx[0][2] = sinf(rad);
+	mx[0][0] = cosf(angle);
+	mx[0][2] = sinf(angle);
 	mx[1][1] = 1;
-	mx[2][0] = -sinf(rad);
-	mx[2][2] = cosf(rad);
-	pt = ft_get_map_center(map);
+	mx[2][0] = -sinf(angle);
+	mx[2][2] = cosf(angle);
 	i = 0;
-	while (i < map->h)
+	while (i < len)
 	{
-		j = 0;
-		while (j < map->w)
-		{
-			ft_mx_mult(mx, &map->pts[i * map->w + j]);
-			j++;
-		}
+		ft_mx_mult(mx, &mat[i]);
 		i++;
 	}
-	vec.axes[X] = pt.axes[X];
-	vec.axes[Y] = pt.axes[Y];
-	vec.axes[Z] = pt.axes[Z];
-	ft_mx_mult(mx, &vec);
-	vec.axes[X] = pt.axes[X] - vec.axes[X];
-	vec.axes[Y] = pt.axes[Y] - vec.axes[Y];
-	ft_translate_map(map, &vec);
 }
 
-void	ft_rotate_z(t_map *map, float angle)
+void	ft_rotate_z(t_point *mat, size_t len, float angle)
 {
 	int		i;
-	int		j;
-	float	rad;
 	float	mx[3][3];
 	t_point	pt;
 	t_point	vec;
-
+	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
-	rad = angle * M_PI / 180;
-	mx[0][0] = cosf(rad);
-	mx[0][1] = -sinf(rad);
-	mx[1][0] = sinf(rad);
-	mx[1][1] = cosf(rad);
+	mx[0][0] = cosf(angle);
+	mx[0][1] = -sinf(angle);
+	mx[1][0] = sinf(angle);
+	mx[1][1] = cosf(angle);
 	mx[2][2] = 1;
-	pt = ft_get_map_center(map);
 	i = 0;
-	while (i < map->h)
+	while (i < len)
 	{
-		j = 0;
-		while (j < map->w)
+		ft_mx_mult(mx, &mat[i]);
+		i++;
+	}
+}
+
+void	ft_mat_scale(t_point *pts, size_t len, float scale)
+{
+	size_t	i;
+	size_t	k;
+
+	i = 0;
+	while (i < len)
+	{
+		k = 0;
+		while (k < 3)
 		{
-			ft_mx_mult(mx, &map->pts[i * map->w + j]);
-			j++;
+			pts[i].axes[k] *= scale;
+			k++;
 		}
 		i++;
 	}
-	vec.axes[X] = pt.axes[X];
-	vec.axes[Y] = pt.axes[Y];
-	vec.axes[Z] = pt.axes[Z];
-	ft_mx_mult(mx, &vec);
-	vec.axes[X] = pt.axes[X] - vec.axes[X];
-	vec.axes[Y] = pt.axes[Y] - vec.axes[Y];
-	ft_translate_map(map, &vec);
+}
+
+void	ft_mat_trans(t_point *pts, size_t len, float vec[3])
+{
+	size_t	i;
+	size_t	k;
+
+	i = 0;
+	while (i < len)
+	{
+		k = 0;
+		while (k < 3)
+		{
+			pts[i].axes[k] += vec[k];
+			k++;
+		}
+		i++;
+	}
 }

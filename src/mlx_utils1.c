@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:54:20 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/11 15:59:14 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:06:53 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,24 @@ int	ft_mlx_init(t_mlx_data *mlx)
 	return (rc);
 }
 
+void	ft_set_px_col(char *addr, int color, int endian)
+{
+	if (endian == 1)
+	{
+		addr[0] = (color >> 24);
+		addr[1] = (color >> 16) & 0xFF;
+		addr[2] = (color >> 8) & 0xFF;
+		addr[3] = (color) & 0xFF;
+	}
+	else if (endian == 0)
+	{
+		addr[0] = (color) & 0xFF;
+		addr[1] = (color >> 8) & 0xFF;
+		addr[2] = (color >> 16) & 0xFF;
+		addr[3] = (color >> 24);
+	}
+}
+
 void	ft_pixel_put(t_point *point, t_mlx_data *mlx)
 {
 	char	*dst;
@@ -79,11 +97,34 @@ void	ft_pixel_put(t_point *point, t_mlx_data *mlx)
 	}
 }
 
+/*
 void	ft_set_color(int color, t_mlx_data *mlx)
 {
-	t_point	pt;
+	int	axis[2];
+	int	pixel;
+
+	axis[X] = 0;
+	axis[Y] = 0;
+	while (axis[Y] < HEIGHT)
+	{
+		while (axis[X] < WIDTH)
+		{
+			pixel = (axis[Y] * mlx->size_line) + (axis[X] * 4);
+			mlx->img_addr[pixel] = color;
+			axis[X]++;
+		}
+		axis[Y]++;
+		axis[X] = 0;
+	}
+}
+*/
+
+void	ft_set_color(int color, t_mlx_data *mlx)
+{
 	int		i;
 	int		j;
+	size_t	pix;
+	char	*addr;
 
 	i = 0;
 	while (i < HEIGHT)
@@ -91,10 +132,11 @@ void	ft_set_color(int color, t_mlx_data *mlx)
 		j = 0;
 		while (j < WIDTH)
 		{
-			pt.axes[X] = j;
-			pt.axes[Y] = i;
-			pt.color = color;
-			ft_pixel_put(&pt, mlx);
+			addr = &mlx->img_addr[(i * mlx->size_line) + j * (mlx->bits_per_pixel / 8)];
+			addr[0] = color;
+			addr[1] = color;
+			addr[2] = color;
+			addr[3] = color;
 			j++;
 		}
 		i++;
