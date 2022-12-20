@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 10:52:35 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 15:49:30 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 01:41:40 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,26 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "matrix.h"
+
+static int	ft_get_width(char *line)
+{
+	char	**values;
+	int		i;	
+
+	if (line == NULL)
+		return (-1);
+	values = ft_split(line, ' ');
+	if (!values)
+		return (-1);
+	i = 0;
+	while (values[i] != NULL)
+	{
+		free(values[i]);
+		i++;
+	}
+	free(values);
+	return (i);
+}
 
 static int	ft_init_w_and_h(char *path, t_map *map)
 {
@@ -39,19 +59,7 @@ static int	ft_init_w_and_h(char *path, t_map *map)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (0);
-}
-
-static int	ft_init_other(t_map *map)
-{
-	map->scale = 50;
-	map->trans[X] = WIDTH / 2;
-	map->trans[Y] = HEIGHT / 2 + 150;
-	map->trans[Z] = 0;
-	map->rots[X] = 0;
-	map->rots[Y] = 0;
-	map->rots[Z] = 0;
-	map->brange = 0;
+	map->len = map->w * map->h;
 	return (0);
 }
 
@@ -59,7 +67,7 @@ static int	ft_init_mapdata(char *path, t_map *map)
 {
 	if (ft_init_w_and_h(path, map) != 0)
 		return (1);
-	if (ft_init_other(map) != 0)
+	if (ft_reset_props(map) != 0)
 		return (1);
 	return (0);
 }
@@ -131,13 +139,13 @@ static int	ft_fill_mat(t_map *map, char *path)
 	return (rc);
 }
 
-void	ft_center_mat(t_map *map)
+void	ft_mat_to_orig(t_map *map)
 {
 	float	vec[3];
 
 	vec[X] = -map->w / 2;
 	vec[Y] = -map->h / 2;
-	vec[Z] = 0;
+	vec[Z] = -ft_midz(map) / 2;
 	ft_mat_trans(map->mat, map->w * map->h, vec);
 }
 
@@ -153,6 +161,6 @@ int	ft_parse_map(char *path, t_map *map)
 		map->pts = NULL;
 		return (1);
 	}
-	ft_center_mat(map);
+	ft_mat_to_orig(map);
 	return (0);
 }

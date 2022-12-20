@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 20:22:20 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 14:59:46 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 01:44:13 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,43 @@
 #include "map_utils.h"
 #include "libft.h"
 #include "mlx_utils.h"
+
+void	ft_center(t_map *map)
+{
+	map->trans[X] = WIDTH / 2;
+	map->trans[Y] = HEIGHT / 2;
+}
+
+/* Check if all of the points coords are within the screen resolution */ 
+int	ft_all_points_in(t_map *map)
+{
+	int		i;
+	t_point	*pt;
+
+	ft_apply_props(map);
+	i = 0;
+	while (i < map->len)
+	{
+		pt = &map->pts[i];
+		if (pt->axes[X] >= WIDTH || pt->axes[X] < 0)
+			return (0);
+		if (pt->axes[Y] >= HEIGHT || pt->axes[Y] < 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	ft_fit(t_map *map)
+{
+	ft_center(map);
+	map->scale = 1;
+	while (ft_all_points_in(map))
+	{
+		map->scale += 2;
+	}
+	map->scale -= 2;
+}
 
 int	ft_handle_key(int keycode, t_data *data)
 {
@@ -97,6 +134,18 @@ int	ft_handle_key(int keycode, t_data *data)
 		data->map->rots[X] = 0;
 		data->map->rots[Y] = 0;
 		data->map->rots[Z] = 0;
+	}
+	else if (keycode == XK_c)
+	{
+		ft_center(data->map);
+	}
+	else if (keycode == XK_f)
+	{
+		ft_fit(data->map);
+	}
+	else if (keycode == XK_r)
+	{
+		ft_reset_props(data->map);
 	}
 	ft_apply_and_draw(data->map, data->mlx);
 	return (0);

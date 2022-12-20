@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 17:13:09 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/13 20:56:28 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 01:20:03 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	main(int argc, char *argv[])
 	data.map = &map;
 	//mlx_mouse_hook(mlx.win, ft_handle_key, &data);
 	//mlx_hook(mlx.win, 5, ButtonReleaseMask, ft_mouse_release, &data);
-	mlx_hook(mlx.win, 6, Button1MotionMask, ft_mouse_move, &data);
-	mlx_key_hook(mlx.win, ft_handle_key, &data);
+	mlx_hook(mlx.win, MotionNotify, Button1MotionMask, ft_mouse_move, &data);
+	mlx_hook(mlx.win, KeyPress, KeyPressMask, ft_handle_key, &data);
 	mlx_mouse_hook(mlx.win, ft_mouse_press, &data);
 	mlx_loop(mlx.mlx_ptr);
 	free(map.pts);

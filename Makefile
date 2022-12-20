@@ -1,6 +1,7 @@
 NAME:=fdf
 LIBFT = libft/libft.a
 SRC:=main.c \
+	 debug1.c \
 	 common_utils1.c \
 	 mlx_utils1.c \
 	 mlx_utils2.c \
@@ -23,8 +24,7 @@ LFLAGS=-L./libft -L/usr/lib -Lmlx_linux
 LIBS=-lft -lmlx -lXext -lX11 -lm -lz
 DBG=-g -O3
 #-O
-CFLAGS= 
-#-Wall -Wextra -Werror
+CFLAGS=-Wall -Wextra -Werror
 CC=gcc
 
 all: $(NAME)

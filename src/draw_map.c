@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:17:51 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 15:26:46 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 01:42:17 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,17 @@ static void	ft_draw_pts(t_map *map, t_mlx_data *data)
 	ft_update_img(data);
 }
 
-void	ft_apply_and_draw(t_map *map, t_mlx_data *data)
+void	ft_apply_props(t_map *map)
 {
-	float	trans[3];
-	clock_t	t;
-	double	p;
-	size_t	len;
-
-	ft_print_map_data(map);
 	ft_memcpy(map->pts, map->mat, sizeof(t_point) * map->w * map->h);
 	ft_bend(map);
 	ft_rotate(map);
 	ft_mat_scale(map->pts, map->w * map->h, map->scale);
 	ft_mat_trans(map->pts, map->w * map->h, map->trans);
-	t = clock();
+}
+
+void	ft_apply_and_draw(t_map *map, t_mlx_data *data)
+{
+	ft_apply_props(map);
 	ft_draw_pts(map, data);
-	t = clock() - t;
-	p = (double) t / CLOCKS_PER_SEC;
 }

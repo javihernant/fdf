@@ -6,12 +6,13 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 12:35:28 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/27 23:32:16 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 01:41:16 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
+#include "fdf.h"
 
 static int	ft_get_hexval(char c)
 {
@@ -63,4 +64,27 @@ void	ft_error(void)
 {
 	ft_putstr_fd("Error!", 2);
 	exit(1);
+}
+
+float	ft_midz(t_map *map)
+{
+	int	i;
+	int	c;
+	float	pz;
+	float	res;
+
+	i = 0;
+	c = 0;
+	res = 0;
+	while (i < map->w * map->h)
+	{
+		pz = map->mat[i].axes[Z];
+		if (pz != 0)
+		{
+			res += pz;
+			c++;
+		}
+		i++;
+	}
+	return (res / c);
 }

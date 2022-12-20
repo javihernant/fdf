@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 13:43:57 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 15:43:48 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:37:20 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	ft_mouse_move(int x, int y, t_data *data)
 	data->mlx->last_click.axes[X] = x;
 	data->mlx->last_click.axes[Y] = y;
 	ft_apply_and_draw(data->map, data->mlx);
+	return (0);
 }
 
 int	ft_mouse_press(int button, int x, int y, t_data *data)
@@ -61,4 +62,5 @@ int	ft_mouse_press(int button, int x, int y, t_data *data)
 	}
 	if (button == 4 || button == 5)
 		ft_apply_and_draw(data->map, data->mlx);
+	return (0);
 }

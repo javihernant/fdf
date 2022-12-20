@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:04:47 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 15:42:24 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:39:54 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ t_point	ft_central_pt(t_map *map, size_t len)
 
 void	ft_rotate_x(t_point *mat, size_t len, float angle)
 {
-	int		i;
+	size_t		i;
 	float	mx[3][3];
-	t_point	pt;
-	t_point	vec;
 
 	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
@@ -91,10 +89,8 @@ void	ft_rotate_x(t_point *mat, size_t len, float angle)
 
 void	ft_rotate_y(t_point *mat, size_t len, float angle)
 {
-	int		i;
+	size_t		i;
 	float	mx[3][3];
-	t_point	pt;
-	t_point	vec;
 
 	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
@@ -113,10 +109,8 @@ void	ft_rotate_y(t_point *mat, size_t len, float angle)
 
 void	ft_rotate_z(t_point *mat, size_t len, float angle)
 {
-	int		i;
+	size_t		i;
 	float	mx[3][3];
-	t_point	pt;
-	t_point	vec;
 	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
 	mx[0][0] = cosf(angle);

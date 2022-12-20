@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 12:54:20 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/18 22:06:53 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:35:44 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void	ft_set_color(int color, t_mlx_data *mlx)
 {
 	int		i;
 	int		j;
-	size_t	pix;
 	char	*addr;
 
 	i = 0;
