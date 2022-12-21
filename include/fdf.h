@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:50:45 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 20:58:58 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:55:51 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,14 @@ typedef struct s_mlx_data {
 	int		size_line;
 	int		endian;
 	t_point	last_click;
-	int		mouse_held;
+	int		button;
 	//int		stroke;
 }	t_mlx_data;
 
 typedef struct s_map {
 	int		w;
 	int		h;
+	int		zdiv;
 	int		len;
 	t_point	*pts;
 	t_point	*mat;

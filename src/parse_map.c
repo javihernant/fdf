@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 10:52:35 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:41:40 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:20:56 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,31 @@ static int	ft_init_w_and_h(char *path, t_map *map)
 	return (0);
 }
 
-static int	ft_init_mapdata(char *path, t_map *map)
+void	ft_set_zdiv(t_map *map)
 {
-	if (ft_init_w_and_h(path, map) != 0)
-		return (1);
-	if (ft_reset_props(map) != 0)
-		return (1);
-	return (0);
+	float	rat;
+
+	map->zdiv = 1;
+	rat = ft_get_maxz(map) / map->w;
+	if (rat > 0.5)
+		map->zdiv = rat * 20;
+}
+
+void	ft_mat_to_orig(t_map *map)
+{
+	float	vec[3];
+
+	vec[X] = -map->w / 2;
+	vec[Y] = -map->h / 2;
+	vec[Z] = -ft_midz(map) / 2;
+	ft_mat_trans(map->mat, map->w * map->h, vec);
+}
+
+static void	ft_init_mapdata(t_map *map)
+{
+	ft_set_zdiv(map);
+	ft_reset_props(map);
+	ft_mat_to_orig(map);
 }
 
 static int	ft_alloc_map_mem(t_map *map)
@@ -139,19 +157,35 @@ static int	ft_fill_mat(t_map *map, char *path)
 	return (rc);
 }
 
-void	ft_mat_to_orig(t_map *map)
-{
-	float	vec[3];
 
-	vec[X] = -map->w / 2;
-	vec[Y] = -map->h / 2;
-	vec[Z] = -ft_midz(map) / 2;
-	ft_mat_trans(map->mat, map->w * map->h, vec);
+
+int	ft_check_format(char *path)
+{
+	int		i;
+	int		j;
+	char	*fmt;
+
+	fmt = ".fdf";
+	i = ft_strlen(path);
+	if (i == 0 || i < 4)
+		return (1);
+	i -= 1;
+	j = 3;
+	while (j >= 0)
+	{
+		if (path[i] != fmt[j])
+			return (1);
+		i--;
+		j--;
+	}
+	return (0);
 }
 
 int	ft_parse_map(char *path, t_map *map)
 {
-	if (ft_init_mapdata(path, map) != 0)
+	if (ft_check_format(path) != 0)
+		return (1);
+	if (ft_init_w_and_h(path, map) != 0)
 		return (1);
 	if (ft_alloc_map_mem(map) != 0)
 		return (1);
@@ -161,6 +195,6 @@ int	ft_parse_map(char *path, t_map *map)
 		map->pts = NULL;
 		return (1);
 	}
-	ft_mat_to_orig(map);
+	ft_init_mapdata(map);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:17:51 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:42:17 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:10:20 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	ft_draw_pts(t_map *map, t_mlx_data *data)
 void	ft_apply_props(t_map *map)
 {
 	ft_memcpy(map->pts, map->mat, sizeof(t_point) * map->w * map->h);
+	if (map->zdiv != 1)
+		ft_zdiv(map);
 	ft_bend(map);
 	ft_rotate(map);
 	ft_mat_scale(map->pts, map->w * map->h, map->scale);

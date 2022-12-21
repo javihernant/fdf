@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 20:16:57 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:39:19 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:05:40 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "fdf.h"
 #include "map_utils.h"
 #include "matrix.h"
+#include <stdlib.h>
 
 void	ft_rotate(t_map *map)
 {
@@ -28,7 +29,7 @@ void	ft_bend(t_map *map)
 	float	tmp;
 
 	i = 0;
-	while (i < map->w * map->h)
+	while (i < map->len)
 	{
 		tmp = map->pts[i].axes[X] * map->pts[i].axes[X] * map->brange +
 			map->pts[i].axes[Y] * map->pts[i].axes[Y] * map->brange;
@@ -37,7 +38,19 @@ void	ft_bend(t_map *map)
 	}
 }
 
-int	ft_reset_props(t_map *map)
+void	ft_zdiv(t_map *map)
+{
+	int		i;
+
+	i = 0;
+	while (i < map->len)
+	{
+		map->pts[i].axes[Z] /= map->zdiv;
+		i++;
+	}
+}
+
+void	ft_reset_props(t_map *map)
 {
 	map->scale = 50;
 	map->trans[X] = WIDTH / 2;
@@ -47,5 +60,12 @@ int	ft_reset_props(t_map *map)
 	map->rots[Y] = 0;
 	map->rots[Z] = 0;
 	map->brange = 0;
-	return (0);
+}
+
+void	ft_free_map(t_map *map)
+{
+	free(map->pts);
+	map->pts = NULL;
+	free(map->mat);
+	map->mat = NULL;
 }

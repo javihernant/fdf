@@ -11,7 +11,8 @@ SRC:=main.c \
 	 parse_map.c \
 	 handle_mouse.c \
 	 matrix.c \
-	 handle_keys.c
+	 handle_keys.c \
+	 prog_utils.c
 
 #ft_isometric.c \
 
@@ -22,8 +23,8 @@ COMPILED_OBJS=$(shell find . -name '*.o')
 IFLAGS=-I./libft/include -I./include -I/usr/include -Imlx_linux
 LFLAGS=-L./libft -L/usr/lib -Lmlx_linux
 LIBS=-lft -lmlx -lXext -lX11 -lm -lz
-DBG=-g -O3
-#-O
+DBG=-g 
+#-O3
 CFLAGS=-Wall -Wextra -Werror
 CC=gcc
 

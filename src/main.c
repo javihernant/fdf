@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 17:13:09 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:20:03 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:11:11 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "fdf.h"
 #include "map_utils.h"
 #include "common_utils.h"
-#include "mlx_utils.h"
+#include "prog_utils.h"
 #include "keycodes.h"
 #include <stdlib.h>
 
@@ -36,12 +36,10 @@ int	main(int argc, char *argv[])
 	ft_apply_and_draw(&map, &mlx);
 	data.mlx = &mlx;
 	data.map = &map;
-	//mlx_mouse_hook(mlx.win, ft_handle_key, &data);
-	//mlx_hook(mlx.win, 5, ButtonReleaseMask, ft_mouse_release, &data);
-	mlx_hook(mlx.win, MotionNotify, Button1MotionMask, ft_mouse_move, &data);
-	mlx_hook(mlx.win, KeyPress, KeyPressMask, ft_handle_key, &data);
+	mlx_hook(mlx.win, MotionNotify, Button1MotionMask | Button3MotionMask, ft_mouse_move, &data);
+	//mlx_hook(mlx.win, MotionNotify, Button1MotionMask, ft_mouse_rots, &data);
+	mlx_hook(mlx.win, KeyPress, KeyPressMask, ft_handle_keys, &data);
 	mlx_mouse_hook(mlx.win, ft_mouse_press, &data);
 	mlx_loop(mlx.mlx_ptr);
-	free(map.pts);
 	return (0);
 }

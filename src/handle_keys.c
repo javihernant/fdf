@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 20:22:20 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:44:13 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:12:46 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "keycodes.h"
 #include "map_utils.h"
 #include "libft.h"
-#include "mlx_utils.h"
+#include "prog_utils.h"
 
 void	ft_center(t_map *map)
 {
@@ -53,100 +53,110 @@ void	ft_fit(t_map *map)
 	map->scale -= 2;
 }
 
-int	ft_handle_key(int keycode, t_data *data)
+void	ft_scale_keys(int key, float *scale)
 {
-	if (keycode == XK_plus)
+	if (key == XK_plus)
 	{
-		data->map->scale *= 2;
+		*scale *= 2;
 	}
-	else if (keycode == XK_minus)
+	else if (key == XK_minus)
 	{
-		data->map->scale *= 0.5;
+		*scale *= 0.5;
 	}
-	else if (keycode == XK_Left)
+}
+
+void	ft_trans_keys(int key, float *trans)
+{
+	if (key == XK_Left)
 	{
-		data->map->trans[X] -= TRANS_RATE;
+		trans[X] -= TRANS_RATE;
 	}
-	else if (keycode == XK_Right)
+	else if (key == XK_Right)
 	{
-		data->map->trans[X] += TRANS_RATE;
+		trans[X] += TRANS_RATE;
 	}
-	else if (keycode == XK_Down)
+	else if (key == XK_Down)
 	{
-		data->map->trans[Y] += TRANS_RATE;
+		trans[Y] += TRANS_RATE;
 	}
-	else if (keycode == XK_Up)
+	else if (key == XK_Up)
 	{
-		data->map->trans[Y] -= TRANS_RATE;
+		trans[Y] -= TRANS_RATE;
 	}
-	else if (keycode == XK_d)
+}
+
+void	ft_rots_keys(int key, float *rots)
+{
+	if (key == XK_d)
+		rots[Y] += ANG_RATE;
+	else if (key == XK_a)
+		rots[Y] -= ANG_RATE;
+	else if (key == XK_w)
+		rots[X] -= ANG_RATE;
+	else if (key == XK_s)
+		rots[X] += ANG_RATE;
+	else if (key == XK_z)
+		rots[Z] -= ANG_RATE;
+	else if (key == XK_x)
+		rots[Z] += ANG_RATE;
+}
+
+void	ft_bend_keys(int key, float *brange)
+{
+	if (key == XK_b)
+		*brange += 0.0002;
+	else if (key == XK_v)
+		*brange -= 0.0002;
+}
+
+void	ft_projs_keys(int key, float *rots)
+{
+	if (key == XK_i)
 	{
-		data->map->rots[Y] += ANG_RATE;
+		rots[X] = 30;
+		rots[Y] = 330;
+		rots[Z] = 30;
 	}
-	else if (keycode == XK_a)
+	else if (key == XK_1)
 	{
-		data->map->rots[Y] -= ANG_RATE;
+		rots[X] = 90;
+		rots[Y] = 0;
+		rots[Z] = 0;
 	}
-	else if (keycode == XK_w)
+	else if (key == XK_2)
 	{
-		data->map->rots[X] -= ANG_RATE;
+		rots[X] = 0;
+		rots[Y] = 90;
+		rots[Z] = 0;
 	}
-	else if (keycode == XK_s)
+	else if (key == XK_3)
 	{
-		data->map->rots[X] += ANG_RATE;
+		rots[X] = 0;
+		rots[Y] = 0;
+		rots[Z] = 0;
 	}
-	else if (keycode == XK_z)
-	{
-		data->map->rots[Z] -= ANG_RATE;
-	}
-	else if (keycode == XK_x)
-	{
-		data->map->rots[Z] += ANG_RATE;
-	}
-	else if (keycode == XK_i)
-	{
-		data->map->rots[X] = 30;
-		data->map->rots[Y] = 330;
-		data->map->rots[Z] = 30;
-	}
-	else if (keycode == XK_b)
-	{
-		data->map->brange += 0.0002;
-	}
-	else if (keycode == XK_v)
-	{
-		data->map->brange -= 0.0002;
-	}
-	else if (keycode == XK_1)
-	{
-		data->map->rots[X] = 90;
-		data->map->rots[Y] = 0;
-		data->map->rots[Z] = 0;
-	}
-	else if (keycode == XK_2)
-	{
-		data->map->rots[X] = 0;
-		data->map->rots[Y] = 90;
-		data->map->rots[Z] = 0;
-	}
-	else if (keycode == XK_3)
-	{
-		data->map->rots[X] = 0;
-		data->map->rots[Y] = 0;
-		data->map->rots[Z] = 0;
-	}
-	else if (keycode == XK_c)
-	{
+}
+
+void	ft_misc_keys(int key, t_data *data)
+{
+	if (key == XK_c)
 		ft_center(data->map);
-	}
-	else if (keycode == XK_f)
-	{
+	else if (key == XK_f)
 		ft_fit(data->map);
-	}
-	else if (keycode == XK_r)
-	{
+	else if (key == XK_r)
 		ft_reset_props(data->map);
-	}
+	else if (key == XK_Escape)
+		ft_quit_prog(data);
+}
+
+int	ft_handle_keys(int keycode, t_data *data)
+{
+	ft_scale_keys(keycode, &data->map->scale);
+	ft_trans_keys(keycode, data->map->trans);
+	ft_rots_keys(keycode, data->map->rots);
+	ft_projs_keys(keycode, data->map->rots);
+	ft_bend_keys(keycode, &data->map->brange);
+	ft_misc_keys(keycode, data);
 	ft_apply_and_draw(data->map, data->mlx);
 	return (0);
 }

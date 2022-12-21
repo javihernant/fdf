@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 12:35:28 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:41:16 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:19:39 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	ft_error(void)
 
 float	ft_midz(t_map *map)
 {
-	int	i;
-	int	c;
+	int		i;
+	int		c;
 	float	pz;
 	float	res;
 
@@ -87,4 +87,24 @@ float	ft_midz(t_map *map)
 		i++;
 	}
 	return (res / c);
+}
+
+float	ft_get_maxz(t_map *map)
+{
+	int		i;
+	float	pz;
+	float	res;
+
+	if (map->len <= 0)
+		return (0);
+	res = map->mat[0].axes[Z];
+	i = 1;
+	while (i < map->len)
+	{
+		pz = map->mat[i].axes[Z];
+		if (pz > res)
+			res = pz;
+		i++;
+	}
+	return (res);
 }
