@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 22:59:35 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/01 20:12:43 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/26 23:19:47 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ static void	ft_init_draw_line(t_point *dif, int *inc, int *color_inc, int *d)
 
 static void	ft_calc_color_low(t_point *curr, int width, int col_a, int col_b)
 {
-	int	p;
+	float	p;
 	int	alpha;
 	int	red;
 	int	green;
 	int	blue;
 
-	p = (curr->axes[X] * 100 / width);
-	alpha = ft_get_alpha(col_a) + ((ft_get_alpha(col_b) - ft_get_alpha(col_a))
-		* p) / 100;
-	red = ft_get_red(col_a) + ((ft_get_red(col_b) - ft_get_red(col_a))
-		* p) / 100;
-	green = ft_get_green(col_a) + ((ft_get_green(col_b) - ft_get_green(col_a))
-		* p) / 100;
-	blue = ft_get_blue(col_a) + ((ft_get_blue(col_b) - ft_get_blue(col_a))
-		* p) / 100;
+	p = (curr->axes[X] / width);
+	alpha = ft_get_alpha(col_a) + ((float)(ft_get_alpha(col_b) - ft_get_alpha(col_a))
+		* p);
+	red = ft_get_red(col_a) + ((float)(ft_get_red(col_b) - ft_get_red(col_a))
+		* p);
+	green = ft_get_green(col_a) + ((float)(ft_get_green(col_b) - ft_get_green(col_a))
+		* p);
+	blue = ft_get_blue(col_a) + ((float)(ft_get_blue(col_b) - ft_get_blue(col_a))
+		* p);
 	curr->color = ((alpha & 0xff) << 24
 			| (red & 0xff) << 16
 			| (green & 0xff) << 8
@@ -45,21 +45,21 @@ static void	ft_calc_color_low(t_point *curr, int width, int col_a, int col_b)
 
 static void	ft_calc_color_high(t_point *curr, int width, int col_a, int col_b)
 {
-	int	p;
+	float	p;
 	int	alpha;
 	int	red;
 	int	green;
 	int	blue;
 
-	p = (curr->axes[Y] * 100 / width);
-	alpha = ft_get_alpha(col_a) + ((ft_get_alpha(col_b) - ft_get_alpha(col_a))
-		* p) / 100;
-	red = ft_get_red(col_a) + ((ft_get_red(col_b) - ft_get_red(col_a))
-		* p) / 100;
-	green = ft_get_green(col_a) + ((ft_get_green(col_b) - ft_get_green(col_a))
-		* p) / 100;
-	blue = ft_get_blue(col_a) + ((ft_get_blue(col_b) - ft_get_blue(col_a))
-		* p) / 100;
+	p = (curr->axes[Y] / width);
+	alpha = ft_get_alpha(col_a) + ((float)(ft_get_alpha(col_b) - ft_get_alpha(col_a))
+		* p);
+	red = ft_get_red(col_a) + ((float)(ft_get_red(col_b) - ft_get_red(col_a))
+		* p);
+	green = ft_get_green(col_a) + ((float)(ft_get_green(col_b) - ft_get_green(col_a))
+		* p);
+	blue = ft_get_blue(col_a) + ((float)(ft_get_blue(col_b) - ft_get_blue(col_a))
+		* p);
 	curr->color = ((alpha & 0xff) << 24
 			| (red & 0xff) << 16
 			| (green & 0xff) << 8
@@ -86,7 +86,7 @@ void	ft_draw_line_low(t_point a, t_point b, t_mlx_data *data)
 	tmp.axes[Y] = a.axes[Y];
 	while (tmp.axes[X] <= b.axes[X])
 	{
-		ft_calc_color_low(&tmp, dif.axes[X] + 1, a.color, b.color);
+		ft_calc_color_low(&tmp, b.axes[X], a.color, b.color);
 		ft_pixel_put(&tmp, data);
 		//tmp.y += ft_inc(&d, &dif);
 		if (d > 0)
@@ -120,7 +120,7 @@ void	ft_draw_line_high(t_point a, t_point b, t_mlx_data *data)
 	tmp.axes[Y] = a.axes[Y];
 	while (tmp.axes[Y] <= b.axes[Y])
 	{
-		ft_calc_color_high(&tmp, dif.axes[X] + 1, a.color, b.color);
+		ft_calc_color_high(&tmp, b.axes[Y] + 1, a.color, b.color);
 		ft_pixel_put(&tmp, data);
 		//tmp.y += ft_inc(&d, &dif);
 		if (d > 0)

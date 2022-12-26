@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 10:52:25 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/21 11:27:54 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/21 12:34:32 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@
 
 void	ft_free_mlxdata(t_mlx_data *mlx)
 {
+	if (mlx->img != NULL)
+		mlx_destroy_image (mlx->mlx_ptr, mlx->img);
 	if (mlx->win != NULL)
 		mlx_destroy_window(mlx->mlx_ptr, mlx->win);
-	if (mlx->img_addr != NULL)
-		mlx_destroy_image (mlx->mlx_ptr, mlx->img_addr);
 }
 
-void	ft_quit_prog(t_data *data)
+int	ft_quit_prog(t_data *data)
 {
 	ft_free_mlxdata(data->mlx);
 	ft_free_map(data->map);
 	exit(0);
+	return (0);
 }
 
 int	ft_mlx_init(t_mlx_data *mlx)

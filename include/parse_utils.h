@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isometric.c                                     :+:      :+:    :+:   */
+/*   parse_utils.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/01 17:15:31 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/01 17:22:31 by jahernan         ###   ########.fr       */
+/*   Created: 2022/12/23 18:23:21 by jahernan          #+#    #+#             */
+/*   Updated: 2022/12/23 18:42:39 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include "fdf.h"
+#ifndef PARSE_UTILS_H
+# define PARSE_UTILS_H
 
-void	ft_isometric(t_map *map)
-{
-	int		i;
-	int		j;
-	t_point	*pt;
-
-	j = 0;
-	while (j < map->h)
-	{
-		i = 0;
-		while (i < map->w)
-		{
-			pt = &map->pts[j * map->w + i];
-			pt->y = (pt->x+2*pt->y+pt->z)/sqrt(6);
-			pt->x = (pt->x - pt->z) / sqrt(2);
-			i++;
-		}
-		j++;
-	}
-}
+int		ft_check_format(char *path);
+void	ft_color_pts(t_map *map);
+void	ft_mat_to_orig(t_map *map);
+int		ft_fill_mat(t_map *map, char *path);
+int		ft_init_w_and_h(char *path, t_map *map);
+void	ft_init_mapdata(t_map *map);
+#endif

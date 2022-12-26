@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:04:47 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/19 16:39:54 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:33:57 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ t_point	ft_central_pt(t_map *map, size_t len)
 	return (pt);
 }
 
-void	ft_rotate_x(t_point *mat, size_t len, float angle)
+void	ft_rotate_x(t_point *mat, int len, float angle)
 {
-	size_t		i;
+	int		i;
 	float	mx[3][3];
 
 	angle = angle * M_PI / 180;
@@ -87,9 +87,9 @@ void	ft_rotate_x(t_point *mat, size_t len, float angle)
 	}
 }
 
-void	ft_rotate_y(t_point *mat, size_t len, float angle)
+void	ft_rotate_y(t_point *mat, int len, float angle)
 {
-	size_t		i;
+	int		i;
 	float	mx[3][3];
 
 	angle = angle * M_PI / 180;
@@ -107,9 +107,9 @@ void	ft_rotate_y(t_point *mat, size_t len, float angle)
 	}
 }
 
-void	ft_rotate_z(t_point *mat, size_t len, float angle)
+void	ft_rotate_z(t_point *mat, int len, float angle)
 {
-	size_t		i;
+	int		i;
 	float	mx[3][3];
 	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
@@ -126,10 +126,10 @@ void	ft_rotate_z(t_point *mat, size_t len, float angle)
 	}
 }
 
-void	ft_mat_scale(t_point *pts, size_t len, float scale)
+void	ft_mat_scale(t_point *pts, int len, float scale)
 {
-	size_t	i;
-	size_t	k;
+	int	i;
+	int	k;
 
 	i = 0;
 	while (i < len)
@@ -144,20 +144,19 @@ void	ft_mat_scale(t_point *pts, size_t len, float scale)
 	}
 }
 
-void	ft_mat_trans(t_point *pts, size_t len, float vec[3])
+void	ft_mat_trans(t_point *pts, int len, float vec[3])
 {
-	size_t	i;
-	size_t	k;
+	int		i;
+	float	*axes;
 
 	i = 0;
 	while (i < len)
 	{
-		k = 0;
-		while (k < 3)
-		{
-			pts[i].axes[k] += vec[k];
-			k++;
-		}
+		axes = pts[i].axes;
+		axes[X] += vec[X];
+		axes[Y] += vec[Y];
+		if (axes[Z] != 0)
+			axes[Z] += vec[Z];
 		i++;
 	}
 }

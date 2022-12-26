@@ -1,18 +1,29 @@
 NAME:=fdf
 LIBFT = libft/libft.a
-SRC:=main.c \
-	 debug1.c \
+SRC:=debug1.c \
 	 common_utils1.c \
 	 mlx_utils1.c \
 	 mlx_utils2.c \
+	 mlx_utils3.c \
+	 keys_utils1.c \
+	 keys_utils2.c \
 	 ft_draw_line.c \
 	 draw_map.c \
-	 map_utils.c \
+	 map_utils1.c \
+	 map_utils2.c \
+	 map_utils3.c \
 	 parse_map.c \
 	 handle_mouse.c \
 	 matrix.c \
 	 handle_keys.c \
-	 prog_utils.c
+	 prog_utils.c \
+	 parse_utils1.c \
+	 parse_utils2.c \
+	 menu.c \
+	 main.c
+	 
+#main.c
+
 
 #ft_isometric.c \
 

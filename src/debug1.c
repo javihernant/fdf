@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 01:35:17 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 01:36:07 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:11:24 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_print_map_data(t_map *map)
 	printf("Width: %d\n", map->w);
 	printf("Height: %d\n", map->h);
 	printf("Scale: %f\n", map->scale);
+	printf("Zdiv: %f\n", map->zdiv);
 	printf("X Translation: %f\n", map->trans[X]);
 	printf("Y Translation: %f\n", map->trans[Y]);
 	printf("Z Translation: %f\n", map->trans[Z]);

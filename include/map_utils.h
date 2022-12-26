@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 20:18:25 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/21 11:03:53 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/22 23:55:35 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,9 @@ void	ft_rotate(t_map *map);
 void	ft_bend(t_map *map);
 void	ft_reset_props(t_map *map);
 void	ft_zdiv(t_map *map);
+void	ft_zmult(t_point *mat, int len, int sc);
+void	ft_center(float *trans);
+void	ft_fit(t_map *map);
+void	ft_draw_menu(t_mlx_data *mlx);
+void	ft_spherize(t_map *map);
 #endif

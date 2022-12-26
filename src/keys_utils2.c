@@ -1,27 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_keys.c                                      :+:      :+:    :+:   */
+/*   keys_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/13 20:22:20 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/23 19:56:21 by jahernan         ###   ########.fr       */
+/*   Created: 2022/12/23 19:54:04 by jahernan          #+#    #+#             */
+/*   Updated: 2022/12/23 19:55:14 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
 #include "keycodes.h"
+#include "fdf.h"
+#include "prog_utils.h"
 #include "map_utils.h"
 
-int	ft_handle_keys(int keycode, t_data *data)
+void	ft_misc_keys(int key, t_data *data)
 {
-	ft_scale_keys(keycode, data->map);
-	ft_trans_keys(keycode, data->map->trans);
-	ft_rots_keys(keycode, data->map->rots);
-	ft_projs_keys(keycode, data->map->rots);
-	ft_bend_keys(keycode, &data->map->brange);
-	ft_misc_keys(keycode, data);
-	ft_apply_and_draw(data->map, data->mlx);
-	return (0);
+	if (key == XK_c)
+		ft_center(data->map->trans);
+	else if (key == XK_f)
+		ft_fit(data->map);
+	else if (key == XK_g)
+	{
+		if (data->map->view == DFLT_VW)
+			data->map->view = SPHR_VW;
+		else
+			data->map->view = DFLT_VW;
+	}
+	else if (key == XK_r)
+	{
+		ft_reset_props(data->map);
+		ft_fit(data->map);
+	}
+	else if (key == XK_Escape)
+		ft_quit_prog(data);
 }

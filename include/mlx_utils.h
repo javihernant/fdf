@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 12:19:19 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/21 10:55:57 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:31:20 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int		ft_get_alpha(int col);
 int		ft_get_red(int col);
 int		ft_get_green(int col);
 int		ft_get_blue(int col);
-void	ft_set_color(int color, t_mlx_data *data);
+void	ft_set_bg(t_mlx_data *data);
 void	ft_update_img(t_mlx_data *mlx_data);
+void	ft_draw_str(char *str, int crd[2], int col, t_mlx_data *mlx);
+void	ft_draw_nbr(int nbr, int crd[2], int col, t_mlx_data *mlx);
 #endif

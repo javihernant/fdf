@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_parse_main.c                                  :+:      :+:    :+:   */
+/*   mlx_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 13:18:24 by jahernan          #+#    #+#             */
-/*   Updated: 2022/11/26 18:44:54 by jahernan         ###   ########.fr       */
+/*   Created: 2022/12/23 19:42:46 by jahernan          #+#    #+#             */
+/*   Updated: 2022/12/23 19:43:17 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "map_utils.h"
 #include "fdf.h"
 #include <stdlib.h>
 
-int	main(int argc, char *argv[])
+void	ft_draw_nbr(int nbr, int crd[2], int col, t_mlx_data *mlx)
 {
-	t_map	map;
+	char	*str;
 
-	if (argc != 2)
-	{
-		ft_printf("%s: <map.fdf>\n", argv[0]);
-		return (0);
-	}
-	ft_parse_map(argv[1], &map);
-	ft_print_map(&map);
-	free(map.pts);
-	return (0);
+	str = ft_itoa(nbr);
+	mlx_string_put(mlx->mlx_ptr, mlx->win, crd[X], crd[Y], col, str);
+	free (str);
+}
+
+void	ft_draw_str(char *str, int crd[2], int col, t_mlx_data *mlx)
+{
+	mlx_string_put(mlx->mlx_ptr, mlx->win, crd[X], crd[Y], col, str);
 }

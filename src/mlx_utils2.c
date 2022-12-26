@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 18:26:25 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/03 23:05:00 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/23 19:42:23 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,4 @@ int	ft_get_blue(int col)
 {
 	return (col & 0xff);
 }
+

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   map_utils1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 20:16:57 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/21 11:05:40 by jahernan         ###   ########.fr       */
+/*   Created: 2022/12/23 19:19:38 by jahernan          #+#    #+#             */
+/*   Updated: 2022/12/23 19:23:06 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 #include "map_utils.h"
 #include "matrix.h"
 #include <stdlib.h>
+#include "common_utils.h"
+#include <math.h>
 
 void	ft_rotate(t_map *map)
 {
-	ft_rotate_x(map->pts, map->w * map->h, map->rots[X]);
-	ft_rotate_y(map->pts, map->w * map->h, map->rots[Y]);
-	ft_rotate_z(map->pts, map->w * map->h, map->rots[Z]);
+	ft_rotate_x(map->pts, map->len, map->rots[X]);
+	ft_rotate_y(map->pts, map->len, map->rots[Y]);
+	ft_rotate_z(map->pts, map->len, map->rots[Z]);
 }
 
 void	ft_bend(t_map *map)
@@ -31,8 +33,8 @@ void	ft_bend(t_map *map)
 	i = 0;
 	while (i < map->len)
 	{
-		tmp = map->pts[i].axes[X] * map->pts[i].axes[X] * map->brange +
-			map->pts[i].axes[Y] * map->pts[i].axes[Y] * map->brange;
+		tmp = map->pts[i].axes[X] * map->pts[i].axes[X] * map->brange
+			+ map->pts[i].axes[Y] * map->pts[i].axes[Y] * map->brange;
 		map->pts[i].axes[Z] -= tmp;
 		i++;
 	}
@@ -50,22 +52,21 @@ void	ft_zdiv(t_map *map)
 	}
 }
 
-void	ft_reset_props(t_map *map)
+void	ft_zmult(t_point *mat, int len, int sc)
 {
-	map->scale = 50;
-	map->trans[X] = WIDTH / 2;
-	map->trans[Y] = HEIGHT / 2;
-	map->trans[Z] = 0;
-	map->rots[X] = 0;
-	map->rots[Y] = 0;
-	map->rots[Z] = 0;
-	map->brange = 0;
+	int		i;
+
+	i = 0;
+	while (i < len)
+	{
+		mat[i].axes[Z] *= sc;
+		i++;
+	}
 }
 
-void	ft_free_map(t_map *map)
+void	ft_center(float *trans)
 {
-	free(map->pts);
-	map->pts = NULL;
-	free(map->mat);
-	map->mat = NULL;
+	trans[X] = (WIDTH - PANEL_W) / 2 + PANEL_W + PADDING;
+	trans[Y] = HEIGHT / 2 + PADDING;
+	trans[Z] = 0;
 }

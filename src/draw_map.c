@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:17:51 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/20 20:10:20 by jahernan         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:08:32 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "map_utils.h"
 #include <time.h>
 #include <stdlib.h>
+#include "debug_utils.h"
 
 static void	ft_draw_pts(t_map *map, t_mlx_data *data)
 {
@@ -22,7 +23,7 @@ static void	ft_draw_pts(t_map *map, t_mlx_data *data)
 	int	j;
 
 	j = 0;
-	ft_set_color(COL_BLCK, data);
+	ft_set_bg(data);
 	while (j < map->h)
 	{
 		i = 0;
@@ -47,17 +48,21 @@ static void	ft_draw_pts(t_map *map, t_mlx_data *data)
 
 void	ft_apply_props(t_map *map)
 {
-	ft_memcpy(map->pts, map->mat, sizeof(t_point) * map->w * map->h);
+	ft_memcpy(map->pts, map->mat, sizeof(t_point) * map->len);
 	if (map->zdiv != 1)
 		ft_zdiv(map);
 	ft_bend(map);
+	if (map->view == SPHR_VW)
+		ft_spherize(map);
 	ft_rotate(map);
-	ft_mat_scale(map->pts, map->w * map->h, map->scale);
-	ft_mat_trans(map->pts, map->w * map->h, map->trans);
+	ft_mat_scale(map->pts, map->len, map->scale);
+	ft_mat_trans(map->pts, map->len, map->trans);
 }
 
 void	ft_apply_and_draw(t_map *map, t_mlx_data *data)
 {
+	ft_print_map_data(map);
 	ft_apply_props(map);
 	ft_draw_pts(map, data);
+	ft_draw_menu(data);
 }
