@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 19:17:51 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/23 17:08:32 by jahernan         ###   ########.fr       */
+/*   Updated: 2023/01/09 12:35:12 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "map_utils.h"
 #include <time.h>
 #include <stdlib.h>
-#include "debug_utils.h"
 
 static void	ft_draw_pts(t_map *map, t_mlx_data *data)
 {
@@ -61,7 +60,6 @@ void	ft_apply_props(t_map *map)
 
 void	ft_apply_and_draw(t_map *map, t_mlx_data *data)
 {
-	ft_print_map_data(map);
 	ft_apply_props(map);
 	ft_draw_pts(map, data);
 	ft_draw_menu(data);

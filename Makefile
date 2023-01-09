@@ -1,7 +1,6 @@
 NAME:=fdf
 LIBFT = libft/libft.a
-SRC:=debug1.c \
-	 common_utils1.c \
+SRC:=common_utils1.c \
 	 mlx_utils1.c \
 	 mlx_utils2.c \
 	 mlx_utils3.c \
