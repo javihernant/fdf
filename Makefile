@@ -8,13 +8,16 @@ SRC:=debug1.c \
 	 keys_utils1.c \
 	 keys_utils2.c \
 	 ft_draw_line.c \
+	 ft_draw_line_utils.c \
 	 draw_map.c \
 	 map_utils1.c \
 	 map_utils2.c \
 	 map_utils3.c \
 	 parse_map.c \
 	 handle_mouse.c \
+	 handle_mouse_utils.c \
 	 matrix.c \
+	 matrix2.c \
 	 handle_keys.c \
 	 prog_utils.c \
 	 parse_utils1.c \
@@ -34,9 +37,8 @@ COMPILED_OBJS=$(shell find . -name '*.o')
 IFLAGS=-I./libft/include -I./include -I/usr/include -Imlx_linux
 LFLAGS=-L./libft -L/usr/lib -Lmlx_linux
 LIBS=-lft -lmlx -lXext -lX11 -lm -lz
-DBG=-g 
-#-O3
-CFLAGS=-Wall -Wextra -Werror
+#DBG=-g 
+CFLAGS=-Wall -Wextra -Werror -O3
 CC=gcc
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: jahernan <jahernan@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:04:47 by jahernan          #+#    #+#             */
-/*   Updated: 2022/12/21 20:33:57 by jahernan         ###   ########.fr       */
+/*   Updated: 2023/01/09 11:51:57 by jahernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,6 @@ void	ft_mx_mult(float mx[3][3], t_point *pt)
 	}
 	i = 0;
 	ft_memcpy(pt->axes, tmp, sizeof(float) * 3);
-}
-
-t_point	ft_central_pt(t_map *map, size_t len)
-{
-	size_t	i;
-	size_t	k;
-	float	tot[3];
-	t_point	pt;
-
-	ft_memset(tot, 0, sizeof(float) * 3);
-	i = 0;
-	while (i < len)
-	{
-		pt = map->pts[i];
-		k = 0;
-		while (k < 3)
-		{
-			tot[k] += pt.axes[k];
-			k++;
-		}
-		i++;
-	}
-	k = 0;
-	while (k < 3)
-	{
-		tot[k] /= (len);
-		pt.axes[k] = tot[k];
-		k++;
-	}
-	return (pt);
 }
 
 void	ft_rotate_x(t_point *mat, int len, float angle)
@@ -111,6 +81,7 @@ void	ft_rotate_z(t_point *mat, int len, float angle)
 {
 	int		i;
 	float	mx[3][3];
+
 	angle = angle * M_PI / 180;
 	ft_memset(mx, 0, sizeof(float) * 3 * 3);
 	mx[0][0] = cosf(angle);
@@ -140,23 +111,6 @@ void	ft_mat_scale(t_point *pts, int len, float scale)
 			pts[i].axes[k] *= scale;
 			k++;
 		}
-		i++;
-	}
-}
-
-void	ft_mat_trans(t_point *pts, int len, float vec[3])
-{
-	int		i;
-	float	*axes;
-
-	i = 0;
-	while (i < len)
-	{
-		axes = pts[i].axes;
-		axes[X] += vec[X];
-		axes[Y] += vec[Y];
-		if (axes[Z] != 0)
-			axes[Z] += vec[Z];
 		i++;
 	}
 }
