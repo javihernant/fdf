@@ -1,4 +1,4 @@
-# Cub3d
+# FDF
 
 ## Description
 This program is a simple graphic tool to visualize a basic landscape in 3d. This landscape can be codified in a file that specifies the coords of each point in space. The program will take the file and convert it to an isometric view of the landscape it represents.
