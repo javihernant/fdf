@@ -1,5 +1,6 @@
 NAME:=fdf
 LIBFT = libft/libft.a
+MLX = minilibx-linux/libmlx.a
 SRC:=common_utils1.c \
 	 mlx_utils1.c \
 	 mlx_utils2.c \
@@ -23,7 +24,7 @@ SRC:=common_utils1.c \
 	 parse_utils2.c \
 	 menu.c \
 	 main.c
-	 
+
 #main.c
 
 
@@ -33,16 +34,16 @@ SRC:=$(addprefix src/,$(SRC))
 OBJ=$(SRC:.c=.o)
 
 COMPILED_OBJS=$(shell find . -name '*.o')
-IFLAGS=-I./libft/include -I./include -I/usr/include -Imlx_linux
-LFLAGS=-L./libft -L/usr/lib -Lmlx_linux
+IFLAGS=-I./libft/include -I./include -I/usr/include -Iminilibx-linux
+LFLAGS=-L./libft -L/usr/lib -Lminilibx-linux
 LIBS=-lft -lmlx -lXext -lX11 -lm -lz
-#DBG=-g 
+#DBG=-g
 CFLAGS=-Wall -Wextra -Werror -O3
 CC=gcc
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): $(MLX) $(LIBFT) $(OBJ)
 	$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) $(OBJ) -o $(NAME) $(LIBS) $(DBG)
 
 %.o:%.c
@@ -50,6 +51,9 @@ $(NAME): $(LIBFT) $(OBJ)
 
 $(LIBFT):
 	$(MAKE) -C ./libft
+
+$(MLX):
+	$(MAKE) -C ./minilibx-linux
 
 clean:
 	$(MAKE) clean -C ./libft
@@ -61,4 +65,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus libft clean fclean re 
+.PHONY: all bonus libft clean fclean re
