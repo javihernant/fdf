@@ -5,7 +5,7 @@ This program is a simple graphic tool to visualize a basic landscape in 3d. This
 
 `minilibx` graphics library has been used in this project. It contains very basic functionality such as window creation, drawing and event management. Any other functionality has to be coded by yourself. That is a feature (not a bug), because it forces you to learn about graphics algorithms; like Bresenham's line algorithm if you intend to draw lines (which you are most likely to, btw).
 
-![Alt Text]()
+![alt-text](https://github.com/javihernant/fdf/blob/master/scr.gif)
 
 ## Features
 - Translation and rotation of the rendered object in space
@@ -17,7 +17,7 @@ This program is a simple graphic tool to visualize a basic landscape in 3d. This
 - Side pane with all key and mouse controls
 
 ## Future work
--[Side panel] Add Debuging info
--One point-perspective
--Conic
--antialising
+- [Side panel] Add Debuging info
+- One point-perspective
+- Conic
+- antialising
