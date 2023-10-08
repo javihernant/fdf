@@ -16,6 +16,10 @@ This program is a simple graphic tool to visualize a basic landscape in 3d. This
 - Colors
 - Side pane with all key and mouse controls
 
+## Usage
+Type `make` in a terminal to compile the program. Then, just pass one of the maps at the `maps/` directory as an argument:
+```./fdf: <map.fdf>```
+
 ## Future work
 - [Side panel] Add Debuging info
 - One point-perspective
